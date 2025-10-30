@@ -76,10 +76,10 @@
   transition:.15s ease;
 }
 .btn-primary{
-  background: var(--primary);
-  color:white;
+  background: rgb(54, 121, 245);
+  color:rgb(0, 0, 0);
 }
-.btn-primary:hover{ background: var(--primary-600); }
+.btn-primary:hover{ background: rgb(78, 100, 141); }
 .btn-ghost{
   background:#fff;
   border:1px solid var(--border);
