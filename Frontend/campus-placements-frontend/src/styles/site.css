@@ -61,3 +61,24 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family: ui-sans-serif,s
 @media (max-width:520px){
   .footer-inner{ flex-direction:column; gap:6px; height:auto; padding:12px 0; }
 }
+
+.avatar-btn{
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+  letter-spacing: 0.05em;
+}
+.avatar-btn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
