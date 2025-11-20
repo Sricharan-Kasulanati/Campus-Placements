@@ -1,6 +1,6 @@
 :root{
-  --brand:#6d28d9;
-  --brand-900:#5b21b6;
+  --brand:#266dbe;
+  --brand-900:#374151;
   --ink:#111827;
   --muted:#6b7280;
   --bg:#f9fafb;
@@ -15,16 +15,16 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family: ui-sans-serif,s
 
 .nav{
   position:sticky; top:0; z-index:20;
-  background:#fff; border-bottom:1px solid var(--border);
+  background:#2a4061; border-bottom:1px solid var(--border);
 }
 .nav-inner{
   height:64px; display:flex; align-items:center; justify-content:space-between;
 }
 .brand{
-  display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink);
+  display:flex; align-items:center; gap:10px; color:var(--ink);
 }
 .brand-logo{
-  width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#7c3aed,#ec4899);
+  width:55px; height:55px; border-radius:8px; background:url('CPLogo.png');
   display:inline-block;
 }
 .brand-title{ font-weight:800; letter-spacing:.2px; }

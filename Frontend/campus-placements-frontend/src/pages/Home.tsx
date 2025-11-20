@@ -13,7 +13,7 @@ export default function Home() {
           <div className="home-hero-text">
             <h1 className="home-title">Campus Placements</h1>
             <p className="home-subtitle">
-              Connect students with top companies, explore opportunities, and streamline your placement process.
+              Connect with top companies, explore opportunities, and streamline your placement process!
             </p>
           </div>
 
@@ -51,7 +51,7 @@ export default function Home() {
               </div>
               <h3 className="step-heading">Step 2</h3>
               <p className="step-text">
-                Practice questions, topics and download practice papers.
+                Try practice questions, look at topics, and download practice papers.
               </p>
             </article>
             <article className="step-card">

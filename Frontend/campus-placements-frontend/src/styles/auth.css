@@ -42,7 +42,7 @@
   border-radius: 12px;
   outline:none;
   transition:.15s ease;
-  background:#f9fafb;
+  background:#ffffff;
 }
 .input:focus{
   border-color: var(--ring);
@@ -76,8 +76,8 @@
   transition:.15s ease;
 }
 .btn-primary{
-  background: rgb(54, 121, 245);
-  color:rgb(0, 0, 0);
+  background: var(--brand);
+  color:rgb(0, 0, 0); 
 }
 .btn-primary:hover{ background: rgb(78, 100, 141); }
 .btn-ghost{
