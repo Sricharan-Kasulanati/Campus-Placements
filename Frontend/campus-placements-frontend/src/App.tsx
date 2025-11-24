@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
 import ProtectedRoute from './auth/ProtectedRoute';
+import Landing from 'pages/Landing';
 
 export default function App() {
   return (
@@ -22,6 +23,14 @@ export default function App() {
                 element={
               <ProtectedRoute>
                   <Profile />
+              </ProtectedRoute>
+    }
+  />
+  <Route
+                path="/Landing"
+                element={
+              <ProtectedRoute>
+                  <Landing />
               </ProtectedRoute>
     }
   />
