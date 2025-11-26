@@ -20,7 +20,7 @@ export default function Login() {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault(); setErr(''); setLoading(true);
-    try { const res = await login({ email, password }); setSession(res); nav('/'); }
+    try { const res = await login({ email, password }); setSession(res); nav('/Landing'); }
     catch (e) { setErr(e instanceof HttpError ? (e.status===401?'Invalid email or password': e.message) : 'Login failed'); }
     finally { setLoading(false); }
   }

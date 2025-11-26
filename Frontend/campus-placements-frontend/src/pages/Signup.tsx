@@ -35,7 +35,7 @@ export default function Signup() {
     try {
       const res = await signup(form);
       setSession(res);
-      nav('/');
+      nav('/Landing');
     } catch (err) {
       if (err instanceof HttpError && err.status === 409) {
         setError('Email already exists');
