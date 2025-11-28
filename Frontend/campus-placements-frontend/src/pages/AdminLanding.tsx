@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import SearchBar from "../components/SearchBar";
-import { searchCompaniesPage, createCompany, updateCompany } from "../api/company";
+import {
+  searchCompaniesPage,
+  createCompany,
+  updateCompany,
+} from "../api/company";
 import type { Company } from "../types/company";
 import type { Page } from "../types/page";
 import "../styles/landing.css";
 import { useNavigate } from "react-router-dom";
 import AdminCompanyCard from "../components/AdminCompanyCard";
-import AdminModal from "../components/AdminModal"
+import AdminModal from "../components/AdminModal";
 
 export default function AdminLanding() {
   const [loading, setLoading] = useState(true);
@@ -39,7 +43,9 @@ export default function AdminLanding() {
     setLoading(false);
   }
 
-  useEffect(() => { loadInitial(); }, []);
+  useEffect(() => {
+    loadInitial();
+  }, []);
 
   async function onSearch(q: string) {
     setLoading(true);
@@ -50,14 +56,17 @@ export default function AdminLanding() {
     const pgQ = await searchCompaniesPage(q, 0, size, "name,asc");
     const pgAll = await searchCompaniesPage("", 0, size, "name,asc");
 
-    const exact = (pgQ.content ?? []).find(
-      (c) => c.name.trim().toLowerCase() === q.trim().toLowerCase()
-    ) || null;
+    const exact =
+      (pgQ.content ?? []).find(
+        (c) => c.name.trim().toLowerCase() === q.trim().toLowerCase()
+      ) || null;
 
     if (q.trim() && !exact) setNoExactMsg(`No companies named “${q}”.`);
 
     setTopMatch(exact);
-    const dedup = exact ? pgAll.content.filter((c) => c.id !== exact.id) : pgAll.content;
+    const dedup = exact
+      ? pgAll.content.filter((c) => c.id !== exact.id)
+      : pgAll.content;
     setAllCompanies(dedup);
     setTotalPages(pgAll.totalPages);
     setLast(pgAll.last);
@@ -69,8 +78,15 @@ export default function AdminLanding() {
     if (last) return;
     setLoading(true);
     const next = page + 1;
-    const pgAll: Page<Company> = await searchCompaniesPage("", next, size, "name,asc");
-    const extra = topMatch ? pgAll.content.filter((c) => c.id !== topMatch.id) : pgAll.content;
+    const pgAll: Page<Company> = await searchCompaniesPage(
+      "",
+      next,
+      size,
+      "name,asc"
+    );
+    const extra = topMatch
+      ? pgAll.content.filter((c) => c.id !== topMatch.id)
+      : pgAll.content;
     setAllCompanies((prev) => [...prev, ...extra]);
     setPage(next);
     setLast(pgAll.last);
@@ -89,18 +105,19 @@ export default function AdminLanding() {
 
   return (
     <div className="landing">
+      <div className="admin-top-bar">
+        <button
+          className="admin-add-btn"
+          onClick={() => {
+            setEditCompany(null);
+            setShowModal(true);
+          }}
+        >
+          Add Company
+        </button>
 
-     <div className="admin-top-bar">
-  <button
-    className="admin-add-btn"
-    onClick={() => { setEditCompany(null); setShowModal(true); }}
-  >
-    Add Company
-  </button>
-
-  <SearchBar onSearch={onSearch} />
-</div>
-
+        <SearchBar onSearch={onSearch} />
+      </div>
 
       {loading && allCompanies.length === 0 && !topMatch ? (
         <p className="state">Loading companies…</p>
@@ -111,14 +128,15 @@ export default function AdminLanding() {
               <section style={{ marginBottom: 18 }}>
                 <h4 className="section-title">Top match</h4>
                 <div className="company-grid">
-                  
                   <AdminCompanyCard
                     company={topMatch}
-                    onEdit={() => { setEditCompany(topMatch); setShowModal(true); }}
+                    onEdit={() => {
+                      setEditCompany(topMatch);
+                      setShowModal(true);
+                    }}
                     onPrep={() => navigate(`/admin/${topMatch.id}/prep`)}
                     onExam={() => navigate(`/admin/${topMatch.id}/exam`)}
                   />
-
                 </div>
               </section>
             ) : (
@@ -138,7 +156,10 @@ export default function AdminLanding() {
                     <AdminCompanyCard
                       key={c.id}
                       company={c}
-                      onEdit={() => { setEditCompany(c); setShowModal(true); }}
+                      onEdit={() => {
+                        setEditCompany(c);
+                        setShowModal(true);
+                      }}
                       onPrep={() => navigate(`/admin/${c.id}/prep`)}
                       onExam={() => navigate(`/admin/${c.id}/exam`)}
                     />
@@ -154,7 +175,9 @@ export default function AdminLanding() {
                     <span className="state" style={{ fontSize: 13 }}>
                       Showing {allCompanies.length} result
                       {allCompanies.length === 1 ? "" : "s"}
-                      {totalPages > 1 ? ` (page ${page+1} of ${totalPages})` : ""}
+                      {totalPages > 1
+                        ? ` (page ${page + 1} of ${totalPages})`
+                        : ""}
                     </span>
                   )}
                 </div>
@@ -162,6 +185,17 @@ export default function AdminLanding() {
             )}
           </section>
         </>
+      )}
+
+      {showModal && (
+        <AdminModal
+          initial={editCompany}
+          onClose={() => {
+            setShowModal(false);
+            setEditCompany(null);
+          }}
+          onSubmit={saveCompany}
+        />
       )}
     </div>
   );
