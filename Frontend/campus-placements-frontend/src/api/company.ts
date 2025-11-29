@@ -42,24 +42,20 @@ export async function getCompany(id: number): Promise<Company> {
 }
 
 export async function createCompany(payload: CompanyPayload): Promise<Company> {
-  const res = await fetch("/api/companies", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
+  return http<Company>('/api/companies', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: payload as any,
   });
-  if (!res.ok) throw new Error("Failed to create company");
-  return res.json();
 }
 
 export async function updateCompany(
   id: number,
   payload: CompanyPayload
 ): Promise<Company> {
-  const res = await fetch(`/api/companies/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
+  return http<Company>(`/api/companies/update/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: { ...payload, id } as any,
   });
-  if (!res.ok) throw new Error("Failed to update company");
-  return res.json();
 }
