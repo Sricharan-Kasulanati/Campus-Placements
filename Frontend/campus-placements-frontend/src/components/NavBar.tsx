@@ -17,6 +17,7 @@ export default function NavBar() {
   const navigate = useNavigate();
 
   const initials = useMemo(() => initialsOf(user?.fullName), [user]);
+  const isAdmin = user?.role === 'ADMIN'
 
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -52,9 +53,27 @@ export default function NavBar() {
               <NavLink to="/landing" end className={({ isActive }) => `link ${isActive ? 'active' : ''}`}>
                 Home
               </NavLink>
+              {isAdmin ? (
+                <>
+                  <NavLink
+                    to="/admin/companies"
+                    className={({ isActive }) => `link ${isActive ? 'active' : ''}`}
+                  >
+                    Student Info
+                  </NavLink>
+
+                  <NavLink
+                    to="/analytics"
+                    className={({ isActive }) => `link ${isActive ? 'active' : ''}`}
+                  >
+                    Student Analytics
+                  </NavLink>
+                </>
+              ) : (
               <NavLink to="/analytics" className={({ isActive }) => `link ${isActive ? 'active' : ''}`}>
                 Analytics
-              </NavLink>
+              </NavLink> 
+            )}
               <div className="account" ref={menuRef}>
                 <button
                   type="button"
