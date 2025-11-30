@@ -10,7 +10,8 @@ public interface PracticeTestService {
 
     List<PracticeTestResponse> listForCompany(Long companyId);
 
-    PracticeTestResponse upload(Long companyId, String title, MultipartFile file) throws IOException;
+    PracticeTestResponse upload(Long companyId, String title, String jobRole,
+                                String description, MultipartFile file) throws IOException;
 
     void delete(Long companyId, Long practiceTestId);
 }

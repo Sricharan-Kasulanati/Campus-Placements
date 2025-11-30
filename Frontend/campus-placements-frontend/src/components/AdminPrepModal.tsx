@@ -11,6 +11,8 @@ type Props = {
 
 export default function AdminPrepModal({ company, onClose, onUploaded }: Props) {
   const [file, setFile] = useState<File | null>(null);
+  const [jobRole, setJobRole] = useState("");
+  const [description, setDescription] = useState("");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,7 +28,7 @@ export default function AdminPrepModal({ company, onClose, onUploaded }: Props) 
     try {
       setUploading(true);
       const title = file.name.replace(/\.pdf$/i, "") || `${company.name} practice test`;
-      await uploadPracticeTest(company.id!, title, file);
+      await uploadPracticeTest(company.id!, title,jobRole.trim(),description.trim(), file);
       if (onUploaded) onUploaded();
       onClose();
     } catch (err) {
@@ -52,6 +54,26 @@ export default function AdminPrepModal({ company, onClose, onUploaded }: Props) 
         </p>
 
         <form onSubmit={handleSubmit}>
+          <div className="prep-field">
+            <label className="prep-label">Job role</label>
+            <input
+              type="text"
+              className="prep-input"
+              placeholder="E.x. Software Engineer Intern"
+              value={jobRole}
+              onChange={(e) => setJobRole(e.target.value)}
+            />
+          </div>
+
+          <div className="prep-field">
+            <label className="prep-label">Description</label>
+            <textarea
+              className="prep-textarea"
+              placeholder="Optional notes about this practice test"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
           <div className="prep-field">
             <label className="prep-label">PDF file</label>
             <input

@@ -36,7 +36,8 @@ public class PracticeTestServiceImpl implements PracticeTestService {
     }
 
     @Override
-    public PracticeTestResponse upload(Long companyId, String title, MultipartFile file) throws IOException {
+    public PracticeTestResponse upload(Long companyId, String title,String jobRole,
+                                       String description, MultipartFile file) throws IOException {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new IllegalArgumentException("Company not found: " + companyId));
 
@@ -81,6 +82,8 @@ public class PracticeTestServiceImpl implements PracticeTestService {
         dto.setFileSize(e.getFileSize());
         dto.setContentType(e.getContentType());
         dto.setUploadedAt(e.getUploadedAt());
+        dto.setJobRole(e.getJobRole());
+        dto.setDescription(e.getDescription());
         return dto;
     }
 }

@@ -30,8 +30,10 @@ public class PracticeTestController {
     public PracticeTestResponse upload(
             @PathVariable Long companyId,
             @RequestParam("title") String title,
+            @RequestParam(value = "jobRole", required = false) String jobRole,
+            @RequestParam(value = "description", required = false) String description,
             @RequestParam("file") MultipartFile file) throws IOException {
-        return service.upload(companyId, title, file);
+        return service.upload(companyId, title,jobRole, description, file);
     }
 
     @DeleteMapping("/{practiceTestId}")
