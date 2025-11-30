@@ -4,6 +4,8 @@ import type { PracticeTest } from "../types/practiceTest";
 export async function uploadPracticeTest(
   companyId: number,
   title: string,
+  jobRole: string,
+  description: string,
   file: File
 ): Promise<PracticeTest> {
   const form = new FormData();
