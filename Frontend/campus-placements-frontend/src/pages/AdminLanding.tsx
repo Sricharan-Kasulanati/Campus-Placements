@@ -11,6 +11,7 @@ import "../styles/landing.css";
 import { useNavigate } from "react-router-dom";
 import AdminCompanyCard from "../components/AdminCompanyCard";
 import AdminModal from "../components/AdminModal";
+import AdminPrepModal from "components/AdminPrepModal";
 
 export default function AdminLanding() {
   const [loading, setLoading] = useState(true);
@@ -25,6 +26,8 @@ export default function AdminLanding() {
 
   const [showModal, setShowModal] = useState(false);
   const [editCompany, setEditCompany] = useState<Company | null>(null);
+
+  const [prepCompany, setPrepCompany] = useState<Company | null>(null);
 
   const navigate = useNavigate();
 
@@ -134,7 +137,7 @@ export default function AdminLanding() {
                       setEditCompany(topMatch);
                       setShowModal(true);
                     }}
-                    onPrep={() => navigate(`/admin/${topMatch.id}/prep`)}
+                    onPrep={() => setPrepCompany(topMatch)}
                     onExam={() => navigate(`/admin/${topMatch.id}/exam`)}
                   />
                 </div>
@@ -160,7 +163,7 @@ export default function AdminLanding() {
                         setEditCompany(c);
                         setShowModal(true);
                       }}
-                      onPrep={() => navigate(`/admin/${c.id}/prep`)}
+                      onPrep={() => setPrepCompany(c)}
                       onExam={() => navigate(`/admin/${c.id}/exam`)}
                     />
                   ))}
@@ -195,6 +198,13 @@ export default function AdminLanding() {
             setEditCompany(null);
           }}
           onSubmit={saveCompany}
+        />
+      )}
+      
+      {prepCompany && (
+        <AdminPrepModal
+          company={prepCompany}
+          onClose={() => setPrepCompany(null)}
         />
       )}
     </div>
