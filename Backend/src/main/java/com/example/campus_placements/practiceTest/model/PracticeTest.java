@@ -31,6 +31,28 @@ public class PracticeTest {
     @Column(nullable = false)
     private Instant uploadedAt = Instant.now();
 
+    @Column(name = "job_role", length = 160)
+    private String jobRole;
+
+    @Column(name = "description", columnDefinition = "text")
+    private String description;
+
+    public String getJobRole() {
+        return jobRole;
+    }
+
+    public void setJobRole(String jobRole) {
+        this.jobRole = jobRole;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
