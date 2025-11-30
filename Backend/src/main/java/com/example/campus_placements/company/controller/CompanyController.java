@@ -44,7 +44,7 @@ public class CompanyController {
         return service.createCompany(req);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public Company updateCompany(@PathVariable Long id, @Valid @RequestBody CompanyUpdateRequest req) {
         req.setId(id);

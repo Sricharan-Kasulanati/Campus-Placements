@@ -1,5 +1,10 @@
 package com.example.campus_placements.company.model;
+import com.example.campus_placements.practiceTest.model.PracticeTest;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -27,6 +32,18 @@ public class Company {
 
     @Column(length = 80)
     private String category;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PracticeTest> practiceTests = new ArrayList<>();
+
+    public List<PracticeTest> getPracticeTests() {
+        return practiceTests;
+    }
+
+    public void setPracticeTests(List<PracticeTest> practiceTests) {
+        this.practiceTests = practiceTests;
+    }
 
     public Long getId() {
         return id;
