@@ -48,3 +48,6 @@ export async function http<T>(path: string, opts: HttpOptions = {}): Promise<T> 
   }
   return data as T;
 }
+
+export const API_BASE =
+  (import.meta as any).env?.VITE_API_BASE_URL ?? "http://localhost:8080";

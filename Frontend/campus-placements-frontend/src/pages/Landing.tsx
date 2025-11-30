@@ -62,8 +62,6 @@ export default function Landing() {
     setQuery(q);
     setTopMatch(null);
     setNoExactMsg(null);
-
-    // 1) search page for q
     const [pgQ, ids, pgAll] = await Promise.all([
       searchCompaniesPage(q, 0, size, "name,asc"),
       getMyRegistrationIds(),

@@ -1,5 +1,5 @@
-import { getAuthToken } from "./http";
-import type { PracticeTest } from "../types/practiceTest";
+import { getAuthToken, http } from "./http";
+import { PracticeTest } from "types/practiceTest";
 
 export async function uploadPracticeTest(
   companyId: number,
@@ -10,6 +10,8 @@ export async function uploadPracticeTest(
 ): Promise<PracticeTest> {
   const form = new FormData();
   form.append("title", title);
+  form.append("jobRole", jobRole);
+  form.append("description", description);
   form.append("file", file);
 
   const token = getAuthToken();
@@ -24,4 +26,13 @@ export async function uploadPracticeTest(
     throw new Error("Failed to upload practice test");
   }
   return res.json();
+}
+
+export async function listPracticeTests(
+  companyId: number
+): Promise<PracticeTest[]> {
+  return http<PracticeTest[]>(
+    `/api/companies/${companyId}/practice-tests`,
+    { method: "GET" }
+  );
 }

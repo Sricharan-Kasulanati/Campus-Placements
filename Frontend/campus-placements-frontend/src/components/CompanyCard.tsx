@@ -54,7 +54,7 @@ export default function CompanyCard({
         </button>
       ) : (
         <>
-          <Link className="company-card-prepare-tests" to={`/prepare/${id}`}>
+          <Link className="company-card-prepare-tests" to={`/companies/${company.id}/prep`}>
             Prepare for tests
           </Link>
 

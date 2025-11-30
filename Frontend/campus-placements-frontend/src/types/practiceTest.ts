@@ -6,4 +6,6 @@ export type PracticeTest = {
   fileSize: number;
   contentType: string;
   uploadedAt: string;
+  jobRole?: string;
+  description?: string;
 };
