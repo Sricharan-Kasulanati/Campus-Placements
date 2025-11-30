@@ -56,7 +56,7 @@ export default function NavBar() {
               {isAdmin ? (
                 <>
                   <NavLink
-                    to="/admin/companies"
+                    to="/admin/students"
                     className={({ isActive }) => `link ${isActive ? 'active' : ''}`}
                   >
                     Student Info
