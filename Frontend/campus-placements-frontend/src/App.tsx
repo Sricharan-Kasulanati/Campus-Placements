@@ -11,6 +11,7 @@ import Landing from "pages/Landing";
 import AdminLanding from "pages/AdminLanding";
 import AdminStudentPage from "pages/AdminStudentPage";
 import CompanyPrepPage from "pages/CompanyPrepPage";
+import StudentExamPage from "pages/StudentExamPage";
 
 export default function App() {
   return (
@@ -65,6 +66,10 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/companies/:companyId/exams"
+            element={<StudentExamPage />}
+            />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <Footer />
