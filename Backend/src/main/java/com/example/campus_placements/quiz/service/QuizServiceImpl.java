@@ -5,14 +5,18 @@ import com.example.campus_placements.company.repository.CompanyRepository;
 import com.example.campus_placements.quiz.dto.*;
 import com.example.campus_placements.quiz.model.Quiz;
 import com.example.campus_placements.quiz.model.QuizQuestion;
+import com.example.campus_placements.quiz.model.StudentQuizAnswer;
 import com.example.campus_placements.quiz.model.StudentQuizAttempt;
 import com.example.campus_placements.quiz.repository.QuizQuestionRepository;
 import com.example.campus_placements.quiz.repository.QuizRepository;
+import com.example.campus_placements.quiz.repository.StudentQuizAnswerRepository;
 import com.example.campus_placements.quiz.repository.StudentQuizAttemptRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -24,15 +28,17 @@ public class QuizServiceImpl implements QuizService {
     private final QuizRepository quizzes;
     private final QuizQuestionRepository questions;
     private final StudentQuizAttemptRepository attempts;
+    private final StudentQuizAnswerRepository answersRepo;
     private final CompanyRepository companies;
 
     public QuizServiceImpl(QuizRepository quizzes,
                            QuizQuestionRepository questions,
-                           StudentQuizAttemptRepository attempts,
+                           StudentQuizAttemptRepository attempts, StudentQuizAnswerRepository answersRepo,
                            CompanyRepository companies) {
         this.quizzes = quizzes;
         this.questions = questions;
         this.attempts = attempts;
+        this.answersRepo = answersRepo;
         this.companies = companies;
     }
 
@@ -201,27 +207,68 @@ public class QuizServiceImpl implements QuizService {
         Map<Long, QuizQuestion> questionMap = quiz.getQuestions().stream()
                 .collect(Collectors.toMap(QuizQuestion::getId, q -> q));
 
-        int score = 0;
+        Map<Long, Character> answerMap = new HashMap<>();
         if (req.getAnswers() != null) {
             for (QuizAnswerDTO ans : req.getAnswers()) {
-                QuizQuestion q = questionMap.get(ans.getQuestionId());
-                if (q == null) continue;
-                if (Character.toUpperCase(ans.getSelectedOption()) == q.getCorrectOption()) {
-                    score++;
-                }
+                answerMap.put(ans.getQuestionId(), ans.getSelectedOption());
             }
         }
 
+        int score = 0;
+        List<QuestionResultDTO> questionResults = new ArrayList<>();
+        List<StudentQuizAnswer> answerEntities = new ArrayList<>();
+
+        for (QuizQuestion q : quiz.getQuestions()) {
+            char correctOption = q.getCorrectOption();
+            Character selected = answerMap.get(q.getId());
+            boolean isCorrect = selected != null &&
+                    Character.toUpperCase(selected) == Character.toUpperCase(correctOption);
+
+            if (isCorrect) {
+                score++;
+            }
+            QuestionResultDTO qr = new QuestionResultDTO();
+            qr.setQuestionId(q.getId());
+            qr.setQuestionText(q.getQuestionText());
+            qr.setOptionA(q.getOptionA());
+            qr.setOptionB(q.getOptionB());
+            qr.setOptionC(q.getOptionC());
+            qr.setOptionD(q.getOptionD());
+            qr.setCorrectOption(String.valueOf(correctOption));
+            qr.setSelectedOption(selected != null ? String.valueOf(selected) : null);
+            qr.setCorrect(isCorrect);
+            questionResults.add(qr);
+        }
         StudentQuizAttempt attempt = new StudentQuizAttempt();
         attempt.setQuiz(quiz);
         attempt.setStudentId(studentId);
         attempt.setScore(score);
         attempt.setTotalQuestions(quiz.getQuestions().size());
-        attempts.save(attempt);
+        attempt = attempts.save(attempt);
+
+        if (req.getAnswers() != null) {
+            for (QuizAnswerDTO ans : req.getAnswers()) {
+                QuizQuestion q = questionMap.get(ans.getQuestionId());
+                if (q == null) continue;
+
+                char selected = ans.getSelectedOption();
+                boolean isCorrect = Character.toUpperCase(selected) ==
+                        Character.toUpperCase(q.getCorrectOption());
+
+                StudentQuizAnswer a = new StudentQuizAnswer();
+                a.setAttempt(attempt);
+                a.setQuestion(q);
+                a.setSelectedOption(selected);
+                a.setCorrect(isCorrect);
+                answerEntities.add(a);
+            }
+            answersRepo.saveAll(answerEntities);
+        }
 
         QuizResultDTO result = new QuizResultDTO();
         result.setScore(score);
         result.setTotalQuestions(quiz.getQuestions().size());
+        result.setQuestions(questionResults);
         return result;
     }
 
