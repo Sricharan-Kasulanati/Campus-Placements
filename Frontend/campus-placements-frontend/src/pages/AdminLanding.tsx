@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import AdminCompanyCard from "../components/AdminCompanyCard";
 import AdminModal from "../components/AdminModal";
 import AdminPrepModal from "components/AdminPrepModal";
+import AdminExamModal from "components/AdminExamModal";
 
 export default function AdminLanding() {
   const [loading, setLoading] = useState(true);
@@ -28,6 +29,7 @@ export default function AdminLanding() {
   const [editCompany, setEditCompany] = useState<Company | null>(null);
 
   const [prepCompany, setPrepCompany] = useState<Company | null>(null);
+  const [examCompany, setExamCompany] = useState<Company | null>(null);
 
   const navigate = useNavigate();
 
@@ -138,7 +140,7 @@ export default function AdminLanding() {
                       setShowModal(true);
                     }}
                     onPrep={() => setPrepCompany(topMatch)}
-                    onExam={() => navigate(`/admin/${topMatch.id}/exam`)}
+                    onExam={() => setExamCompany(topMatch)}
                   />
                 </div>
               </section>
@@ -164,7 +166,7 @@ export default function AdminLanding() {
                         setShowModal(true);
                       }}
                       onPrep={() => setPrepCompany(c)}
-                      onExam={() => navigate(`/admin/${c.id}/exam`)}
+                      onExam={() => setExamCompany(c)}
                     />
                   ))}
                 </div>
@@ -200,11 +202,19 @@ export default function AdminLanding() {
           onSubmit={saveCompany}
         />
       )}
-      
+
       {prepCompany && (
         <AdminPrepModal
           company={prepCompany}
           onClose={() => setPrepCompany(null)}
+        />
+      )}
+
+      {examCompany && (
+        <AdminExamModal
+          company={examCompany}
+          onClose={() => setExamCompany(null)}
+          onCreated={loadInitial}
         />
       )}
     </div>
