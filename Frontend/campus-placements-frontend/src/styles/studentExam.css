@@ -1,0 +1,265 @@
+.student-exam-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+}
+
+.student-exam-modal {
+  background: #ffffff;
+  width: 80vw;
+  max-width: 1100px;
+  max-height: 80vh;
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.42);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: studentExamFadeIn 0.18s ease-out;
+}
+
+.student-exam-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px 20px 10px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.student-exam-title {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.student-exam-subtitle {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.student-exam-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.student-exam-timer {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.student-exam-timer--low {
+  background: #fef2f2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+.student-exam-close {
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  color: #9ca3af;
+}
+
+.student-exam-close:hover {
+  color: #4b5563;
+}
+
+.student-exam-body {
+  padding: 10px 20px 12px;
+  overflow-y: auto;
+}
+
+.student-exam-footer {
+  padding: 10px 20px 16px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.student-exam-state {
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.student-exam-error {
+  font-size: 13px;
+  color: #b91c1c;
+  margin-bottom: 8px;
+}
+
+.student-exam-instructions {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.student-exam-question-card {
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  padding: 10px 12px;
+  background: #f9fafb;
+  margin-bottom: 10px;
+}
+
+.student-exam-question-head {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+
+.student-exam-question-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  font-size: 12px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.student-exam-question-text {
+  margin: 0;
+  font-size: 14px;
+  color: #111827;
+}
+
+.student-exam-options {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.student-exam-option {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.student-exam-option input {
+  margin: 0;
+}
+
+.student-exam-option:hover {
+  background: #eef2ff;
+  border-color: #e0e7ff;
+}
+
+.student-exam-option-letter {
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.student-exam-results-summary h3 {
+  margin: 0 0 4px;
+  font-size: 16px;
+}
+
+.student-exam-results-summary p {
+  margin: 0 0 10px;
+  font-size: 14px;
+}
+
+.student-exam-auto {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.student-exam-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.student-exam-result-card {
+  border-radius: 12px;
+  padding: 8px 10px;
+  border: 1px solid #e5e7eb;
+}
+
+.student-exam-result-card--correct {
+  background: #ecfdf3;
+  border-color: #bbf7d0;
+}
+
+.student-exam-result-card--wrong {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.student-exam-result-head {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+
+.student-exam-options--result {
+  margin-top: 0;
+}
+
+.student-exam-option-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 7px;
+  border-radius: 10px;
+  font-size: 13px;
+  border: 1px solid transparent;
+}
+
+.student-exam-option-tag--correct {
+  border-color: #22c55e;
+  background: #dcfce7;
+}
+
+.student-exam-option-tag--wrong {
+  border-color: #f97373;
+  background: #fee2e2;
+}
+
+.student-exam-chip {
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.student-exam-chip--wrong {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+@keyframes studentExamFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

@@ -58,7 +58,9 @@ export default function CompanyCard({
             Prepare for tests
           </Link>
 
-          <Link className="company-card__link" to={`/prepare/${id}`}>
+          <Link className="company-card__link" to={`/companies/${id}/exams?companyName=${encodeURIComponent(
+        name || ""
+      )}`}>
             Take Practice Tests
           </Link>
         </>

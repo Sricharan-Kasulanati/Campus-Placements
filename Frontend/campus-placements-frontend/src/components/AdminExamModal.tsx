@@ -116,7 +116,7 @@ export default function AdminExamModal({ company, onClose, onCreated }: Props) {
                 <input
                   type="text"
                   className="exam-input"
-                  placeholder="e.g. Java Developer – Online Test"
+                  placeholder="Eg: Online Test"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
@@ -127,7 +127,7 @@ export default function AdminExamModal({ company, onClose, onCreated }: Props) {
                 <input
                   type="text"
                   className="exam-input"
-                  placeholder="e.g. Software Engineer Intern"
+                  placeholder="Eg: Software Engineer Intern"
                   value={jobRole}
                   onChange={(e) => setJobRole(e.target.value)}
                 />
@@ -150,7 +150,7 @@ export default function AdminExamModal({ company, onClose, onCreated }: Props) {
               <label className="exam-label">Description</label>
               <textarea
                 className="exam-textarea"
-                placeholder="Short description about this exam / quiz"
+                placeholder="Short description about this exam "
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
