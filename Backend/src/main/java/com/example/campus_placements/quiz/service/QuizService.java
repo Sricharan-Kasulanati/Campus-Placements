@@ -16,6 +16,7 @@ public interface QuizService {
     List<QuizStudentSummaryDTO> listQuizzesForCompanyStudent(Long companyId, String jobRole);
     QuizForTakingDTO getQuizForStudent(Long quizId, Long studentId);
     QuizResultDTO submitQuiz(Long quizId, Long studentId, QuizSubmitRequest req);
+    StudentAnalyticsOverviewDTO getStudentAnalyticsOverview(Long studentId);
 
-    Quiz findEntity(Long quizId); // optional helper if needed elsewhere
+    Quiz findEntity(Long quizId);
 }
