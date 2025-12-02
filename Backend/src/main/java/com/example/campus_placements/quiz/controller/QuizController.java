@@ -102,4 +102,11 @@ public class QuizController {
         Long studentId = currentUserId(me);
         return quizzes.submitQuiz(quizId, studentId, req);
     }
+
+    @GetMapping("/students/me/quiz-analytics/overview")
+    @PreAuthorize("hasRole('STUDENT')")
+    public StudentAnalyticsOverviewDTO myAnalyticsOverview(@AuthenticationPrincipal UserDetails me) {
+        Long studentId = currentUserId(me);
+        return quizzes.getStudentAnalyticsOverview(studentId);
+    }
 }

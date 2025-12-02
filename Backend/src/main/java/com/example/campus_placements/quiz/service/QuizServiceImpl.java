@@ -15,11 +15,10 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Service
 @Transactional
@@ -276,5 +275,119 @@ public class QuizServiceImpl implements QuizService {
     public Quiz findEntity(Long quizId) {
         return quizzes.findById(quizId)
                 .orElseThrow(() -> new EntityNotFoundException("Quiz not found"));
+    }
+
+    @Override
+    public StudentAnalyticsOverviewDTO getStudentAnalyticsOverview(Long studentId) {
+        List<StudentQuizAttempt> allAttempts = attempts.findAll();
+        List<StudentQuizAttempt> myAttempts = allAttempts.stream()
+                .filter(a -> Objects.equals(a.getStudentId(), studentId))
+                .toList();
+
+        if (myAttempts.isEmpty()) {
+            return new StudentAnalyticsOverviewDTO(Collections.emptyList());
+        }
+        Map<Long, List<StudentQuizAttempt>> myByCompany =
+                myAttempts.stream().collect(groupingBy(a -> a.getQuiz().getCompany().getId()));
+        Map<Long, List<StudentQuizAttempt>> allByQuiz =
+                allAttempts.stream().collect(groupingBy(a -> a.getQuiz().getId()));
+
+        List<CompanyLevelAnalyticsDTO> companies = new ArrayList<>();
+
+        for (Map.Entry<Long, List<StudentQuizAttempt>> entry : myByCompany.entrySet()) {
+            Long companyId = entry.getKey();
+            List<StudentQuizAttempt> myCompanyAttempts = entry.getValue();
+
+            Company company = myCompanyAttempts.get(0).getQuiz().getCompany();
+            int companyAttemptsCount = 0;
+            int companyPercentSum = 0;
+            int companyBestPercent = 0;
+            Map<Long, List<StudentQuizAttempt>> myCompanyByQuiz =
+                    myCompanyAttempts.stream().collect(groupingBy(a -> a.getQuiz().getId()));
+
+            List<QuizLevelAnalyticsDTO> quizDTOs = new ArrayList<>();
+
+            for (Map.Entry<Long, List<StudentQuizAttempt>> qEntry : myCompanyByQuiz.entrySet()) {
+                Long quizId = qEntry.getKey();
+                List<StudentQuizAttempt> myQuizAttempts = qEntry.getValue();
+                Quiz quiz = myQuizAttempts.get(0).getQuiz();
+
+                int myCount = myQuizAttempts.size();
+                int mySumPercent = 0;
+                int myBestPercent = 0;
+                Double myLastPercent = null;
+
+                for (StudentQuizAttempt a : myQuizAttempts) {
+                    int total = a.getTotalQuestions();
+                    int percent = total > 0 ? (a.getScore() * 100 / total) : 0;
+                    mySumPercent += percent;
+                    myBestPercent = Math.max(myBestPercent, percent);
+                    myLastPercent = (double) percent;
+                }
+
+                double myAvgPercent = myCount > 0 ? (mySumPercent * 1.0 / myCount) : 0.0;
+
+                companyAttemptsCount += myCount;
+                companyPercentSum += mySumPercent;
+                companyBestPercent = Math.max(companyBestPercent, myBestPercent);
+
+                List<StudentQuizAttempt> allQuizAttempts = allByQuiz.getOrDefault(quizId, List.of());
+
+                int allCount = allQuizAttempts.size();
+                int allSumPercent = 0;
+                int allBestPercent = 0;
+
+                int[] buckets = new int[5];
+
+                for (StudentQuizAttempt a : allQuizAttempts) {
+                    int total = a.getTotalQuestions();
+                    int percent = total > 0 ? (a.getScore() * 100 / total) : 0;
+
+                    allSumPercent += percent;
+                    allBestPercent = Math.max(allBestPercent, percent);
+
+                    int idx = Math.min(4, percent / 20);
+                    buckets[idx]++;
+                }
+
+                double allAvgPercent = allCount > 0 ? (allSumPercent * 1.0 / allCount) : 0.0;
+
+                List<ScoreBucketDTO> bucketDTOs = List.of(
+                        new ScoreBucketDTO("0–20", buckets[0]),
+                        new ScoreBucketDTO("20–40", buckets[1]),
+                        new ScoreBucketDTO("40–60", buckets[2]),
+                        new ScoreBucketDTO("60–80", buckets[3]),
+                        new ScoreBucketDTO("80–100", buckets[4])
+                );
+
+                QuizLevelAnalyticsDTO quizDTO = new QuizLevelAnalyticsDTO();
+                quizDTO.setQuizId(quizId);
+                quizDTO.setQuizTitle(quiz.getTitle());
+                quizDTO.setMyAttemptsCount(myCount);
+                quizDTO.setMyAverageScorePercent(myAvgPercent);
+                quizDTO.setMyBestScorePercent(myBestPercent);
+                quizDTO.setMyLastScorePercent(myLastPercent);
+                quizDTO.setTotalAttemptsCount(allCount);
+                quizDTO.setOverallAverageScorePercent(allAvgPercent);
+                quizDTO.setOverallBestScorePercent(allBestPercent);
+                quizDTO.setScoreDistribution(bucketDTOs);
+
+                quizDTOs.add(quizDTO);
+            }
+
+            CompanyLevelAnalyticsDTO companyDTO = new CompanyLevelAnalyticsDTO();
+            companyDTO.setCompanyId(companyId);
+            companyDTO.setCompanyName(company.getName());
+            companyDTO.setMyAttemptsCount(companyAttemptsCount);
+            companyDTO.setMyAverageScorePercent(
+                    companyAttemptsCount > 0 ? (companyPercentSum * 1.0 / companyAttemptsCount) : 0.0
+            );
+            companyDTO.setMyBestScorePercent(companyBestPercent);
+            companyDTO.setQuizzes(quizDTOs);
+
+            companies.add(companyDTO);
+        }
+
+        return new StudentAnalyticsOverviewDTO(companies);
     }
 }
