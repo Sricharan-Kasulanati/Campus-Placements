@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import "../styles/analytics.css";
 import { fetchStudentAnalyticsOverview } from "../api/analytics";
+import { fetchStudentAnalyticsOverviewForStudent } from "../api/adminAnalytics";
 
 import {
   StudentAnalyticsOverview,
@@ -21,6 +22,12 @@ import {
   Cell,
   PieLabelRenderProps,
 } from "recharts";
+import { useLocation } from "react-router-dom";
+
+function useQuery() {
+  const { search } = useLocation();
+  return useMemo(() => new URLSearchParams(search), [search]);
+}
 
 type ViewLevel = "company" | "companyQuizzes" | "quizDistribution";
 type ChartStyle = "bar" | "pie";
@@ -43,12 +50,25 @@ export default function StudentAnalyticsPage() {
   );
   const [selectedQuizId, setSelectedQuizId] = useState<number | null>(null);
 
+  const query = useQuery();
+  const studentIdFromQuery = query.get("studentId");
+  const studentNameFromQuery = query.get("name");
+  const studentId = studentIdFromQuery ? Number(studentIdFromQuery) : null;
+  const isAdminViewingStudent = studentId != null && !Number.isNaN(studentId);
+
   useEffect(() => {
     const load = async () => {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetchStudentAnalyticsOverview();
+
+        let res: StudentAnalyticsOverview;
+        if (studentId != null && !Number.isNaN(studentId)) {
+          res = await fetchStudentAnalyticsOverviewForStudent(studentId);
+        } else {
+          res = await fetchStudentAnalyticsOverview();
+        }
+
         setOverview(res);
 
         if (res.companies.length > 0) {
@@ -66,7 +86,7 @@ export default function StudentAnalyticsPage() {
       }
     };
     load();
-  }, []);
+  }, [studentId]);
 
   const companies = overview?.companies ?? [];
 
@@ -145,10 +165,23 @@ export default function StudentAnalyticsPage() {
   return (
     <div className="analytics-page">
       <header className="analytics-header">
-        <h1>Exam Analytics</h1>
-        <p className="analytics-subtitle">
-          Track your progress across companies, job roles, and individual exams.
-        </p>
+        <h1>
+          Student Analytics
+          {isAdminViewingStudent && (
+            <>
+              {" – "}
+              {studentNameFromQuery
+                ? `${studentNameFromQuery} (ID: ${studentId})`
+                : `Student #${studentId}`}
+            </>
+          )}
+        </h1>
+        {!isAdminViewingStudent && (
+          <p className="analytics-subtitle">
+            Track your progress across companies, job roles, and individual
+            exams.
+          </p>
+        )}
       </header>
 
       {loading && <div className="analytics-state">Loading…</div>}
