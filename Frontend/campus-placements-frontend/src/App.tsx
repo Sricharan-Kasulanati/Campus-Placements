@@ -19,80 +19,82 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <NavBar />
+        <div className="app-shell">
+          <NavBar />
+          <main className="app-main">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+              <Route
+                path="/landing"
+                element={
+                  <ProtectedRoute role="STUDENT">
+                    <Landing />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute role="ADMIN">
+                    <AdminLanding />
+                  </ProtectedRoute>
+                }
+              />
 
-          <Route
-            path="/landing"
-            element={
-              <ProtectedRoute role="STUDENT">
-                <Landing />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute role="ADMIN">
-                <AdminLanding />
-              </ProtectedRoute>
-            }
-          />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
 
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
+              <Route
+                path="/admin/students"
+                element={
+                  <ProtectedRoute role="ADMIN">
+                    <AdminStudentPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/companies/:id/prep"
+                element={
+                  <ProtectedRoute role="STUDENT">
+                    <CompanyPrepPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/companies/:companyId/exams"
+                element={<StudentExamPage />}
+              />
+              <Route
+                path="/analytics"
+                element={
+                  <ProtectedRoute>
+                    <StudentAnalyticsPage />
+                  </ProtectedRoute>
+                }
+              />
 
-          <Route
-            path="/admin/students"
-            element={
-              <ProtectedRoute role="ADMIN">
-                <AdminStudentPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/companies/:id/prep"
-            element={
-              <ProtectedRoute role="STUDENT">
-                <CompanyPrepPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/companies/:companyId/exams"
-            element={<StudentExamPage />}
-          />
-          <Route
-            path="/analytics"
-            element={
-              <ProtectedRoute>
-                <StudentAnalyticsPage />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/admin/analytics"
-            element={
-              <ProtectedRoute role="ADMIN">
-                <AdminAnalyticsPage />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-        <Footer />
+              <Route
+                path="/admin/analytics"
+                element={
+                  <ProtectedRoute role="ADMIN">
+                    <AdminAnalyticsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
       </AuthProvider>
     </BrowserRouter>
   );

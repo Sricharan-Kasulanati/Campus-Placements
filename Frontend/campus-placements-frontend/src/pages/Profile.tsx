@@ -89,6 +89,7 @@ export default function Profile() {
             </div>
           )}
 
+          <p>First Name</p>
           <div className="field">
             <span className="field-icon">👤</span>
             <input
@@ -101,6 +102,7 @@ export default function Profile() {
             />
           </div>
 
+          <p>Last Name</p>
           <div className="field">
             <span className="field-icon">👤</span>
             <input
@@ -113,6 +115,7 @@ export default function Profile() {
             />
           </div>
 
+          <p>Email</p>
           <div className="field">
             <span className="field-icon">📧</span>
             <input
@@ -121,6 +124,20 @@ export default function Profile() {
               name="email"
               placeholder="Email"
               value={form.email}
+              onChange={onChange}
+              required
+            />
+          </div>
+
+          <p>Password</p>
+          <div className="field">
+            <span className="field-icon">🔐</span>
+            <input
+              className="input"
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={form.newPassword}
               onChange={onChange}
               required
             />
