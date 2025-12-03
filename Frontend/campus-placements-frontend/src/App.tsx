@@ -12,6 +12,7 @@ import AdminLanding from "pages/AdminLanding";
 import AdminStudentPage from "pages/AdminStudentPage";
 import CompanyPrepPage from "pages/CompanyPrepPage";
 import StudentExamPage from "pages/StudentExamPage";
+import StudentAnalyticsPage from "pages/StudentAnalyticsPage";
 
 export default function App() {
   return (
@@ -53,7 +54,7 @@ export default function App() {
           <Route
             path="/admin/students"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute role="ADMIN">
                 <AdminStudentPage />
               </ProtectedRoute>
             }
@@ -61,7 +62,7 @@ export default function App() {
           <Route
             path="/companies/:id/prep"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute role="STUDENT">
                 <CompanyPrepPage />
               </ProtectedRoute>
             }
@@ -69,6 +70,14 @@ export default function App() {
           <Route
             path="/companies/:companyId/exams"
             element={<StudentExamPage />}
+            />
+            <Route 
+            path="/analytics"
+            element={
+             <ProtectedRoute role="STUDENT">
+                <StudentAnalyticsPage />
+              </ProtectedRoute>
+          }
             />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
