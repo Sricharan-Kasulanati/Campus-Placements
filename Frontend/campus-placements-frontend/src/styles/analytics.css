@@ -1,0 +1,128 @@
+.analytics-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 16px 32px;
+}
+
+.analytics-header h1 {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.analytics-subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.analytics-state {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.analytics-error {
+  margin-top: 16px;
+  font-size: 13px;
+  color: #b91c1c;
+}
+
+.analytics-summary-grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.analytics-card {
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  padding: 10px 12px;
+  background: #f9fafb;
+}
+
+.analytics-card-label {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0 0 4px;
+}
+
+.analytics-card-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.analytics-view-controls {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.analytics-view-left,
+.analytics-view-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.analytics-view-label {
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.analytics-select {
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  padding: 6px 10px;
+  font-size: 13px;
+  background: #ffffff;
+  outline: none;
+}
+
+.analytics-select--small {
+  padding-inline: 8px;
+  min-width: 90px;
+}
+
+.analytics-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.18);
+}
+
+.analytics-section {
+  margin-top: 22px;
+}
+
+.analytics-section-head h2 {
+  margin: 0 0 2px;
+  font-size: 17px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.analytics-section-head p {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.analytics-chart-wrapper {
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  padding: 10px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+.analytics-quiz-summary {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #374151;
+}
