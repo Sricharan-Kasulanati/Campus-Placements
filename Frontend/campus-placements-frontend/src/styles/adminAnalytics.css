@@ -1,0 +1,115 @@
+.admin-analytics-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 16px 32px;
+}
+
+.admin-analytics-header h1 {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.admin-analytics-subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.admin-analytics-state {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.admin-analytics-error {
+  margin-top: 16px;
+  font-size: 13px;
+  color: #b91c1c;
+}
+
+.admin-analytics-summary-grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.admin-analytics-card {
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  padding: 10px 12px;
+  background: #f9fafb;
+}
+
+.admin-analytics-card-label {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0 0 4px;
+}
+
+.admin-analytics-card-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.admin-analytics-section {
+  margin-top: 22px;
+}
+
+.admin-analytics-section-head h2 {
+  margin: 0 0 2px;
+  font-size: 17px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.admin-analytics-section-head p {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.admin-analytics-chart-wrapper {
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  padding: 10px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+.admin-analytics-table-wrapper {
+  margin-top: 8px;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.admin-analytics-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.admin-analytics-table thead {
+  background: #f3f4f6;
+}
+
+.admin-analytics-table th,
+.admin-analytics-table td {
+  padding: 8px 10px;
+  text-align: left;
+}
+
+.admin-analytics-table th {
+  font-weight: 500;
+  color: #374151;
+}
+
+.admin-analytics-table tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
