@@ -54,9 +54,9 @@ body {
   background: linear-gradient(135deg, #7c3aed, #ec4899);
   display: inline-block;
 }
-.brand-title {
-  font-weight: 800;
-  letter-spacing: 0.2px;
+.brand-logo{
+  width:50px; height:50px; border-radius:9px; background-image:url("../images/logoCP.png");
+  display:inline-block;
 }
 
 .nav-links {
