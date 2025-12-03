@@ -3,6 +3,7 @@ import heroImg from '../images/home-1.jpg';
 import step1Img from '../images/home-step-1.webp';
 import step2Img from '../images/home-step-2.jpg';
 import step3Img from '../images/home-step-3.avif';
+import logoImg from '../images/logoCP.png';
 
 
 export default function Home() {
