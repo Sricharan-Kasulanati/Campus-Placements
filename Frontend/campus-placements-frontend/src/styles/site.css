@@ -1,3 +1,4 @@
+
 :root{
   --brand:#6d28d9;
   --brand-900:#5b21b6;
@@ -24,7 +25,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family: ui-sans-serif,s
   display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink);
 }
 .brand-logo{
-  width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,#7c3aed,#ec4899);
+  width:50px; height:50px; border-radius:9px; background-image:url("../images/logoCP.png");
   display:inline-block;
 }
 .brand-title{ font-weight:800; letter-spacing:.2px; }

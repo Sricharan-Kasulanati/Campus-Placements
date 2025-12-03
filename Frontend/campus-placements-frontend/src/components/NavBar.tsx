@@ -1,4 +1,5 @@
 import { NavLink, Link, useNavigate } from 'react-router-dom';
+import logoImg from '../images/logoCP.png';
 import '../styles/site.css';
 import { useAuth } from '../auth/AuthProvider';
 import { useEffect, useMemo, useRef, useState } from 'react';
