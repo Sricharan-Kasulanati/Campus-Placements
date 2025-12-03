@@ -1,6 +1,7 @@
 package com.example.campus_placements.admin.controller;
 
 
+import com.example.campus_placements.admin.dto.AdminAnalyticsOverviewDTO;
 import com.example.campus_placements.admin.dto.AdminStudentResponse;
 import com.example.campus_placements.admin.service.AdminService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,5 +30,11 @@ public class AdminController {
     @GetMapping("/{studentId}")
     public AdminStudentResponse getStudent(@PathVariable Long studentId) {
         return adminService.getStudent(studentId);
+    }
+
+    @GetMapping("/analytics/overview")
+    @PreAuthorize("hasRole('ADMIN')")
+    public AdminAnalyticsOverviewDTO overview() {
+        return adminService.getOverview();
     }
 }
