@@ -63,10 +63,10 @@ export default function NavBar() {
                   </NavLink>
 
                   <NavLink
-                    to="/analytics"
+                    to="/admin/analytics"
                     className={({ isActive }) => `link ${isActive ? 'active' : ''}`}
                   >
-                    Student Analytics
+                    Analytics
                   </NavLink>
                 </>
               ) : (

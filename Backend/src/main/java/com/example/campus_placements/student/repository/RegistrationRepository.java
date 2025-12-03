@@ -16,4 +16,11 @@ public interface RegistrationRepository extends JpaRepository<Registration, Long
     List<Long> findCompanyIdsByStudent(@Param("studentId") Long studentId);
 
     List<Registration> findByStudentIdOrderByRegisteredAtDesc(Long studentId);
+
+    @Query("""
+           select count(distinct r.student.id)
+           from Registration r
+           where r.company.id = :companyId
+           """)
+    long countDistinctStudentIdByCompanyId(@Param("companyId") Long companyId);
 }

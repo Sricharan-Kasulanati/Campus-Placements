@@ -77,7 +77,7 @@ export default function AdminStudentPage() {
               <div className="student-actions">
                 <Link
                   className="student-analytics-link"
-                  to={`/analytics?studentId=${s.id}`}
+                  to={`/analytics?studentId=${s.id}&name=${encodeURIComponent(s.fullName)}`}
                 >
                   See Analytics →
                 </Link>

@@ -109,4 +109,10 @@ public class QuizController {
         Long studentId = currentUserId(me);
         return quizzes.getStudentAnalyticsOverview(studentId);
     }
+
+    @GetMapping("/admin/students/{studentId}/quiz-analytics/overview")
+    @PreAuthorize("hasRole('ADMIN')")
+    public StudentAnalyticsOverviewDTO adminStudentOverview(@PathVariable Long studentId) {
+        return quizzes.getStudentAnalyticsOverview(studentId);
+    }
 }

@@ -13,6 +13,7 @@ import AdminStudentPage from "pages/AdminStudentPage";
 import CompanyPrepPage from "pages/CompanyPrepPage";
 import StudentExamPage from "pages/StudentExamPage";
 import StudentAnalyticsPage from "pages/StudentAnalyticsPage";
+import AdminAnalyticsPage from "pages/AdminAnalyticsPage";
 
 export default function App() {
   return (
@@ -70,15 +71,25 @@ export default function App() {
           <Route
             path="/companies/:companyId/exams"
             element={<StudentExamPage />}
-            />
-            <Route 
+          />
+          <Route
             path="/analytics"
             element={
-             <ProtectedRoute role="STUDENT">
+              <ProtectedRoute>
                 <StudentAnalyticsPage />
               </ProtectedRoute>
-          }
-            />
+            }
+          />
+
+          <Route
+            path="/admin/analytics"
+            element={
+              <ProtectedRoute role="ADMIN">
+                <AdminAnalyticsPage />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <Footer />
