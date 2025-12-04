@@ -13,6 +13,8 @@ import AdminCompanyCard from "../components/AdminCompanyCard";
 import AdminModal from "../components/AdminModal";
 import AdminPrepModal from "components/AdminPrepModal";
 import AdminExamModal from "components/AdminExamModal";
+import { QuizAdminRequest } from "types/exam";
+import AdminExamListModal from "components/AdminExamListModal";
 
 export default function AdminLanding() {
   const [loading, setLoading] = useState(true);
@@ -30,6 +32,13 @@ export default function AdminLanding() {
 
   const [prepCompany, setPrepCompany] = useState<Company | null>(null);
   const [examCompany, setExamCompany] = useState<Company | null>(null);
+
+  type ExistingExam = QuizAdminRequest & { id: number };
+  const [examEditContext, setExamEditContext] = useState<{
+    company: Company;
+    exam: ExistingExam;
+  } | null>(null);
+  const [editExamCompany, setEditExamCompany] = useState<Company | null>(null);
 
   const navigate = useNavigate();
 
@@ -123,7 +132,6 @@ export default function AdminLanding() {
 
         <SearchBar onSearch={onSearch} />
       </div>
-
       {loading && allCompanies.length === 0 && !topMatch ? (
         <p className="state">Loading companies…</p>
       ) : (
@@ -141,6 +149,7 @@ export default function AdminLanding() {
                     }}
                     onPrep={() => setPrepCompany(topMatch)}
                     onExam={() => setExamCompany(topMatch)}
+                    onEditExam={() => setEditExamCompany(topMatch)}
                   />
                 </div>
               </section>
@@ -167,6 +176,7 @@ export default function AdminLanding() {
                       }}
                       onPrep={() => setPrepCompany(c)}
                       onExam={() => setExamCompany(c)}
+                      onEditExam={() => setEditExamCompany(c)}
                     />
                   ))}
                 </div>
@@ -191,7 +201,6 @@ export default function AdminLanding() {
           </section>
         </>
       )}
-
       {showModal && (
         <AdminModal
           initial={editCompany}
@@ -202,19 +211,38 @@ export default function AdminLanding() {
           onSubmit={saveCompany}
         />
       )}
-
       {prepCompany && (
         <AdminPrepModal
           company={prepCompany}
           onClose={() => setPrepCompany(null)}
         />
       )}
-
       {examCompany && (
         <AdminExamModal
           company={examCompany}
           onClose={() => setExamCompany(null)}
           onCreated={loadInitial}
+        />
+      )}
+      {editExamCompany && !examEditContext && (
+        <AdminExamListModal
+          company={editExamCompany}
+          onClose={() => setEditExamCompany(null)}
+          onPick={(exam) => {
+            setExamEditContext({ company: editExamCompany, exam });
+            setEditExamCompany(null);
+          }}
+        />
+      )}
+      {examEditContext && (
+        <AdminExamModal
+          company={examEditContext.company}
+          existingExam={examEditContext.exam}
+          onClose={() => setExamEditContext(null)}
+          onCreated={() => {
+            setExamEditContext(null);
+            loadInitial();
+          }}
         />
       )}
     </div>

@@ -74,7 +74,7 @@ export async function updateQuiz(
 ): Promise<QuizAdminDetail> {
   return http<QuizAdminDetail>(`/api/admin/quizzes/${quizId}`, {
     method: "PUT",
-    body: JSON.stringify(payload),
+    body: payload,
   });
 }
 
@@ -84,3 +84,20 @@ export async function deleteQuiz(quizId: number): Promise<void> {
   });
 }
 
+
+export async function listCompanyQuizzes(
+  companyId: number
+): Promise<QuizAdminDetail[]> {
+  return http<QuizAdminDetail[]>(
+    `/api/admin/companies/${companyId}/quizzes`,
+    { method: "GET" }
+  );
+}
+
+export async function getCompanyQuiz(
+  quizId: number
+): Promise<QuizAdminDetail> {
+  return http<QuizAdminDetail>(`/api/admin/quizzes/${quizId}`, {
+    method: "GET",
+  });
+}

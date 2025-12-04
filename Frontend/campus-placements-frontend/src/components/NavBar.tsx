@@ -1,5 +1,4 @@
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import logoImg from '../images/logoCP.png';
 import '../styles/site.css';
 import { useAuth } from '../auth/AuthProvider';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -41,40 +40,62 @@ export default function NavBar() {
         <div className="nav-links">
           {!user ? (
             <>
-              <NavLink to="/" end className={({ isActive }) => `link ${isActive ? 'active' : ''}`}>
+              <NavLink
+                to="/"
+                end
+                className={({ isActive }) => `link ${isActive ? "active" : ""}`}
+              >
                 Home
               </NavLink>
-              <NavLink to="/login" className={({ isActive }) => `link ${isActive ? 'active' : ''}`}>
+              <NavLink
+                to="/login"
+                className={({ isActive }) => `link ${isActive ? "active" : ""}`}
+              >
                 Login
               </NavLink>
-              <NavLink to="/signup" className="cta">Sign up</NavLink>
+              <NavLink to="/signup" className="cta">
+                Sign up
+              </NavLink>
             </>
           ) : (
             <>
-              <NavLink to="/landing" end className={({ isActive }) => `link ${isActive ? 'active' : ''}`}>
+              <NavLink
+                to="/landing"
+                end
+                className={({ isActive }) => `link ${isActive ? "active" : ""}`}
+              >
                 Home
               </NavLink>
               {isAdmin ? (
                 <>
                   <NavLink
                     to="/admin/students"
-                    className={({ isActive }) => `link ${isActive ? 'active' : ''}`}
+                    className={({ isActive }) =>
+                      `link ${isActive ? "active" : ""}`
+                    }
                   >
                     Student Info
                   </NavLink>
 
                   <NavLink
                     to="/admin/analytics"
-                    className={({ isActive }) => `link ${isActive ? 'active' : ''}`}
+                    className={({ isActive }) =>
+                      `link ${isActive ? "active" : ""}`
+                    }
                   >
                     Analytics
                   </NavLink>
                 </>
               ) : (
-              <NavLink to="/analytics" className={({ isActive }) => `link ${isActive ? 'active' : ''}`}>
-                Analytics
-              </NavLink> 
-            )}
+                <NavLink
+                  to="/analytics"
+                  className={({ isActive }) =>
+                    `link ${isActive ? "active" : ""}`
+                  }
+                >
+                  Analytics
+                </NavLink>
+              )}
               <div className="account" ref={menuRef}>
                 <button
                   type="button"
@@ -82,8 +103,10 @@ export default function NavBar() {
                   aria-haspopup="menu"
                   aria-expanded={open}
                   title={user.fullName}
-                  onClick={() => setOpen(v => !v)}
-                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setOpen(v => !v); }}
+                  onClick={() => setOpen((v) => !v)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") setOpen((v) => !v);
+                  }}
                 >
                   {initials}
                 </button>
@@ -93,7 +116,10 @@ export default function NavBar() {
                     <button
                       className="menu-item"
                       role="menuitem"
-                      onClick={() => { setOpen(false); navigate('/profile'); }}
+                      onClick={() => {
+                        setOpen(false);
+                        navigate("/profile");
+                      }}
                     >
                       Update Profile
                     </button>
@@ -101,7 +127,10 @@ export default function NavBar() {
                     <button
                       className="menu-item danger"
                       role="menuitem"
-                      onClick={() => { setOpen(false); logout(); }}
+                      onClick={() => {
+                        setOpen(false);
+                        logout();
+                      }}
                     >
                       Logout
                     </button>
