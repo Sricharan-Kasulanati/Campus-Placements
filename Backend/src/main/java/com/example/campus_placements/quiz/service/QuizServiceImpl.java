@@ -2,6 +2,7 @@ package com.example.campus_placements.quiz.service;
 
 import com.example.campus_placements.company.model.Company;
 import com.example.campus_placements.company.repository.CompanyRepository;
+import com.example.campus_placements.notification.service.NotificationService;
 import com.example.campus_placements.quiz.dto.*;
 import com.example.campus_placements.quiz.model.Quiz;
 import com.example.campus_placements.quiz.model.QuizQuestion;
@@ -29,16 +30,18 @@ public class QuizServiceImpl implements QuizService {
     private final StudentQuizAttemptRepository attempts;
     private final StudentQuizAnswerRepository answersRepo;
     private final CompanyRepository companies;
+    private final NotificationService notificationService;
 
     public QuizServiceImpl(QuizRepository quizzes,
                            QuizQuestionRepository questions,
                            StudentQuizAttemptRepository attempts, StudentQuizAnswerRepository answersRepo,
-                           CompanyRepository companies) {
+                           CompanyRepository companies, NotificationService notificationService) {
         this.quizzes = quizzes;
         this.questions = questions;
         this.attempts = attempts;
         this.answersRepo = answersRepo;
         this.companies = companies;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -86,6 +89,7 @@ public class QuizServiceImpl implements QuizService {
         }
 
         Quiz saved = quizzes.save(quiz);
+        notificationService.notifyExamCreated(saved.getId());
         return toAdminDetail(saved);
     }
 
@@ -105,21 +109,34 @@ public class QuizServiceImpl implements QuizService {
         quiz.setDurationMinutes(req.getDurationMinutes());
         quiz.setActive(req.getActive());
 
-        quiz.clearQuestions();
+        Map<Long, QuizQuestion> existingById = quiz.getQuestions().stream()
+                .collect(Collectors.toMap(QuizQuestion::getId, q -> q));
+
         if (req.getQuestions() != null) {
             for (QuizQuestionAdminDTO qdto : req.getQuestions()) {
-                QuizQuestion qq = new QuizQuestion();
+
+                QuizQuestion qq = null;
+
+                if (qdto.getId() != null) {
+                    qq = existingById.get(qdto.getId());
+                }
+
+                if (qq == null) {
+                    qq = new QuizQuestion();
+                    qq.setQuiz(quiz);
+                    quiz.addQuestion(qq);
+                }
                 qq.setQuestionText(qdto.getQuestionText());
                 qq.setOptionA(qdto.getOptionA());
                 qq.setOptionB(qdto.getOptionB());
                 qq.setOptionC(qdto.getOptionC());
                 qq.setOptionD(qdto.getOptionD());
                 qq.setCorrectOption(Character.toUpperCase(qdto.getCorrectOption()));
-                quiz.addQuestion(qq);
             }
         }
 
         Quiz saved = quizzes.save(quiz);
+        notificationService.notifyExamUpdated(saved.getId());
         return toAdminDetail(saved);
     }
 

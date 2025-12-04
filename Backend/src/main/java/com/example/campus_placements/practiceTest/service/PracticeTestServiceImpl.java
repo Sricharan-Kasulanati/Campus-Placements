@@ -2,6 +2,7 @@ package com.example.campus_placements.practiceTest.service;
 
 import com.example.campus_placements.company.model.Company;
 import com.example.campus_placements.company.repository.CompanyRepository;
+import com.example.campus_placements.notification.service.NotificationService;
 import com.example.campus_placements.practiceTest.dto.PracticeTestResponse;
 import com.example.campus_placements.practiceTest.model.PracticeTest;
 import com.example.campus_placements.practiceTest.repository.PracticeTestRepository;
@@ -24,11 +25,13 @@ public class PracticeTestServiceImpl implements PracticeTestService {
 
     private final PracticeTestRepository repository;
     private final CompanyRepository companyRepository;
+    private final NotificationService notificationService;
 
     public PracticeTestServiceImpl(PracticeTestRepository repository,
-                                   CompanyRepository companyRepository) {
+                                   CompanyRepository companyRepository, NotificationService notificationService) {
         this.repository = repository;
         this.companyRepository = companyRepository;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -64,6 +67,7 @@ public class PracticeTestServiceImpl implements PracticeTestService {
         pt.setData(file.getBytes());
 
         PracticeTest saved = repository.save(pt);
+        notificationService.notifyPrepAdded(companyId);
         return toResponse(saved);
     }
 
