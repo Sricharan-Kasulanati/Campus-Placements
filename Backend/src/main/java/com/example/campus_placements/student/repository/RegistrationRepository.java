@@ -23,4 +23,7 @@ public interface RegistrationRepository extends JpaRepository<Registration, Long
            where r.company.id = :companyId
            """)
     long countDistinctStudentIdByCompanyId(@Param("companyId") Long companyId);
+
+    List<Registration> findByCompanyId(Long companyId);
+
 }

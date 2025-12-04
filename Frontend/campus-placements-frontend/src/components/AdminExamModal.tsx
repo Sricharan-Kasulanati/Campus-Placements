@@ -1,16 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Company } from "../types/company";
-import { createQuiz } from "../api/exam";
+import { createQuiz, updateQuiz } from "../api/exam";
 import "../styles/adminExam.css";
 import { QuizAdminRequest, QuizQuestionAdmin } from "types/exam";
+
+type ExistingExam = QuizAdminRequest & { id: number };
 
 type Props = {
   company: Company;
   onClose: () => void;
   onCreated?: () => void;
+  existingExam?: ExistingExam | null;
 };
 
-export default function AdminExamModal({ company, onClose, onCreated }: Props) {
+export default function AdminExamModal({
+  company,
+  onClose,
+  onCreated,
+  existingExam,
+}: Props) {
   const [title, setTitle] = useState("");
   const [jobRole, setJobRole] = useState("");
   const [description, setDescription] = useState("");
@@ -28,6 +36,20 @@ export default function AdminExamModal({ company, onClose, onCreated }: Props) {
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!existingExam) return;
+
+    setTitle(existingExam.title ?? "");
+    setJobRole(existingExam.jobRole ?? "");
+    setDescription(existingExam.description ?? "");
+    setDurationMinutes(
+      existingExam.durationMinutes ? String(existingExam.durationMinutes) : ""
+    );
+    if (existingExam.questions && existingExam.questions.length > 0) {
+      setQuestions(existingExam.questions);
+    }
+  }, [existingExam]);
 
   function updateQuestion(
     index: number,
@@ -75,18 +97,28 @@ export default function AdminExamModal({ company, onClose, onCreated }: Props) {
       jobRole: trimmedRole,
       description: description.trim() || undefined,
       durationMinutes: durationMinutes ? Number(durationMinutes) : undefined,
-      active: true,
+      active: existingExam?.active ?? true,
       questions,
     };
 
     try {
       setSaving(true);
-      await createQuiz(company.id!, payload);
+
+      if (existingExam) {
+        await updateQuiz(existingExam.id, payload);
+      } else {
+        await createQuiz(company.id!, payload);
+      }
+
       if (onCreated) onCreated();
       onClose();
     } catch (err) {
       console.error(err);
-      setError("Failed to create exam. Please try again.");
+      setError(
+        existingExam
+          ? "Failed to update exam. Please try again."
+          : "Failed to create exam. Please try again."
+      );
     } finally {
       setSaving(false);
     }
@@ -97,7 +129,9 @@ export default function AdminExamModal({ company, onClose, onCreated }: Props) {
       <div className="exam-modal">
         <div className="exam-modal-header">
           <div>
-            <h2 className="exam-modal-title">Add Exam</h2>
+            <h2 className="exam-modal-title">
+              {existingExam ? "Edit Exam" : "Add Exam"}
+            </h2>
             <p className="exam-modal-subtitle">
               Company: <strong>{company.name}</strong>
             </p>
@@ -248,7 +282,13 @@ export default function AdminExamModal({ company, onClose, onCreated }: Props) {
               Cancel
             </button>
             <button type="submit" className="pager-btn" disabled={saving}>
-              {saving ? "Saving…" : "Create exam"}
+              {saving
+                ? existingExam
+                  ? "Saving…"
+                  : "Creating…"
+                : existingExam
+                ? "Save changes"
+                : "Create exam"}
             </button>
           </div>
         </form>

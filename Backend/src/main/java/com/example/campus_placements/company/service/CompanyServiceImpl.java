@@ -5,6 +5,7 @@ import com.example.campus_placements.company.dto.CompanySearchCriteria;
 import com.example.campus_placements.company.dto.CompanyUpdateRequest;
 import com.example.campus_placements.company.model.Company;
 import com.example.campus_placements.company.repository.CompanyRepository;
+import com.example.campus_placements.notification.service.NotificationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,9 +15,12 @@ public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyRepository repo;
 
-    public CompanyServiceImpl(CompanyRepository repo)
+    private final NotificationService notificationService;
+
+    public CompanyServiceImpl(CompanyRepository repo, NotificationService notificationService)
     {
         this.repo = repo;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -46,6 +50,7 @@ public class CompanyServiceImpl implements CompanyService {
         c.setLocation(req.getLocation());
         c.setWebsite(req.getWebsite());
         c.setCategory(req.getCategory());
+        notificationService.notifyAllStudentsCompanyCreated(c);
         return repo.save(c);
     }
 
@@ -58,6 +63,7 @@ public class CompanyServiceImpl implements CompanyService {
         c.setLocation(req.getLocation());
         c.setWebsite(req.getWebsite());
         c.setCategory(req.getCategory());
+        notificationService.notifyCompanyUpdated(c.getId());
         return repo.save(c);
     }
 

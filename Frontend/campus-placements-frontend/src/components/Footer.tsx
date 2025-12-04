@@ -1,4 +1,6 @@
+import { FaGithub, FaLinkedin, FaSquareXTwitter } from "react-icons/fa6";
 import "../styles/site.css";
+import { FaFacebook } from "react-icons/fa";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -7,7 +9,6 @@ export default function Footer() {
     <footer className="footer">
       <div className="container footer-inner">
         <div className="footer-column footer-contact">
-
           <div className="footer-contact-item">
             <div className="footer-icon-circle">📍</div>
             <div>
@@ -48,33 +49,21 @@ export default function Footer() {
           </p>
 
           <div className="footer-social">
-            <a
-              href="#"
-              aria-label="Facebook"
-              className="footer-social-icon"
-            >
-              f
+            <a href="#" aria-label="Facebook" className="footer-social-icon">
+              <FaFacebook />
+            </a>
+            <a href="#" aria-label="Twitter" className="footer-social-icon">
+              <FaSquareXTwitter />
+            </a>
+            <a href="#" aria-label="LinkedIn" className="footer-social-icon">
+              <FaLinkedin />
             </a>
             <a
-              href="#"
-              aria-label="Twitter"
-              className="footer-social-icon"
-            >
-              t
-            </a>
-            <a
-              href="#"
-              aria-label="LinkedIn"
-              className="footer-social-icon"
-            >
-              in
-            </a>
-            <a
-              href="#"
+              href="https://github.com/Sricharan-Kasulanati/Campus-Placements"
               aria-label="GitHub"
               className="footer-social-icon"
             >
-              {`</>`}
+              <FaGithub />
             </a>
           </div>
         </div>
