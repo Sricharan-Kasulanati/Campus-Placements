@@ -1,6 +1,7 @@
 # Campus-Placements
 # Software Architecture
-<img width="700" height="1522" alt="image" src="https://github.com/user-attachments/assets/bf591dd4-d58d-48fa-b6e1-6ec7a0d60a55" />
+<img width="594" height="1292" alt="image" src="https://github.com/user-attachments/assets/9406523b-f6b9-43d2-8bd2-a808605a6343" />
+
 
 # Description
 
