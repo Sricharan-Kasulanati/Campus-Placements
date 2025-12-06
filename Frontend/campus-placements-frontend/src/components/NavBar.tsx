@@ -130,6 +130,7 @@ export default function NavBar() {
                       onClick={() => {
                         setOpen(false);
                         logout();
+                         navigate("/");
                       }}
                     >
                       Logout

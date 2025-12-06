@@ -12,6 +12,8 @@ import com.example.campus_placements.quiz.repository.QuizQuestionRepository;
 import com.example.campus_placements.quiz.repository.QuizRepository;
 import com.example.campus_placements.quiz.repository.StudentQuizAnswerRepository;
 import com.example.campus_placements.quiz.repository.StudentQuizAttemptRepository;
+import com.example.campus_placements.student.model.Registration;
+import com.example.campus_placements.student.repository.RegistrationRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,17 +33,19 @@ public class QuizServiceImpl implements QuizService {
     private final StudentQuizAnswerRepository answersRepo;
     private final CompanyRepository companies;
     private final NotificationService notificationService;
+    private final RegistrationRepository registrationRepository;
 
     public QuizServiceImpl(QuizRepository quizzes,
                            QuizQuestionRepository questions,
                            StudentQuizAttemptRepository attempts, StudentQuizAnswerRepository answersRepo,
-                           CompanyRepository companies, NotificationService notificationService) {
+                           CompanyRepository companies, NotificationService notificationService, RegistrationRepository registrationRepository) {
         this.quizzes = quizzes;
         this.questions = questions;
         this.attempts = attempts;
         this.answersRepo = answersRepo;
         this.companies = companies;
         this.notificationService = notificationService;
+        this.registrationRepository = registrationRepository;
     }
 
     @Override
@@ -296,39 +300,48 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public StudentAnalyticsOverviewDTO getStudentAnalyticsOverview(Long studentId) {
-        List<StudentQuizAttempt> allAttempts = attempts.findAll();
-        List<StudentQuizAttempt> myAttempts = allAttempts.stream()
-                .filter(a -> Objects.equals(a.getStudentId(), studentId))
-                .toList();
-
-        if (myAttempts.isEmpty()) {
+        List<Registration> regs = registrationRepository.findByStudentIdOrderByRegisteredAtDesc(studentId);
+        if (regs.isEmpty()) {
             return new StudentAnalyticsOverviewDTO(Collections.emptyList());
         }
-        Map<Long, List<StudentQuizAttempt>> myByCompany =
-                myAttempts.stream().collect(groupingBy(a -> a.getQuiz().getCompany().getId()));
+
+        Map<Long, Company> companiesById = regs.stream()
+                .map(Registration::getCompany)
+                .filter(Objects::nonNull)
+                .collect(java.util.stream.Collectors.toMap(
+                        c -> c.getId(),
+                        c -> c,
+                        (c1, c2) -> c1
+                ));
+
+        List<StudentQuizAttempt> allAttempts = attempts.findAll();
+
         Map<Long, List<StudentQuizAttempt>> allByQuiz =
-                allAttempts.stream().collect(groupingBy(a -> a.getQuiz().getId()));
+                allAttempts.stream().collect(java.util.stream.Collectors.groupingBy(a -> a.getQuiz().getId()));
+
+        Map<Long, List<StudentQuizAttempt>> myByQuiz =
+                allAttempts.stream()
+                        .filter(a -> Objects.equals(a.getStudentId(), studentId))
+                        .collect(java.util.stream.Collectors.groupingBy(a -> a.getQuiz().getId()));
 
         List<CompanyLevelAnalyticsDTO> companies = new ArrayList<>();
 
-        for (Map.Entry<Long, List<StudentQuizAttempt>> entry : myByCompany.entrySet()) {
+        for (Map.Entry<Long, Company> entry : companiesById.entrySet()) {
             Long companyId = entry.getKey();
-            List<StudentQuizAttempt> myCompanyAttempts = entry.getValue();
+            Company company = entry.getValue();
 
-            Company company = myCompanyAttempts.get(0).getQuiz().getCompany();
+            List<Quiz> companyQuizzes = quizzes.findByCompanyId(companyId);
+
             int companyAttemptsCount = 0;
             int companyPercentSum = 0;
             int companyBestPercent = 0;
-            Map<Long, List<StudentQuizAttempt>> myCompanyByQuiz =
-                    myCompanyAttempts.stream().collect(groupingBy(a -> a.getQuiz().getId()));
 
             List<QuizLevelAnalyticsDTO> quizDTOs = new ArrayList<>();
 
-            for (Map.Entry<Long, List<StudentQuizAttempt>> qEntry : myCompanyByQuiz.entrySet()) {
-                Long quizId = qEntry.getKey();
-                List<StudentQuizAttempt> myQuizAttempts = qEntry.getValue();
-                Quiz quiz = myQuizAttempts.get(0).getQuiz();
+            for (Quiz quiz : companyQuizzes) {
+                Long quizId = quiz.getId();
 
+                List<StudentQuizAttempt> myQuizAttempts = myByQuiz.getOrDefault(quizId, List.of());
                 int myCount = myQuizAttempts.size();
                 int mySumPercent = 0;
                 int myBestPercent = 0;
@@ -391,7 +404,6 @@ public class QuizServiceImpl implements QuizService {
 
                 quizDTOs.add(quizDTO);
             }
-
             CompanyLevelAnalyticsDTO companyDTO = new CompanyLevelAnalyticsDTO();
             companyDTO.setCompanyId(companyId);
             companyDTO.setCompanyName(company.getName());
