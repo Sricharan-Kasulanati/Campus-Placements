@@ -129,17 +129,16 @@ export default function Profile() {
             />
           </div>
 
-          <p>Password</p>
+          <p>New Password</p>
           <div className="field">
             <span className="field-icon">🔐</span>
             <input
               className="input"
               type="password"
-              name="password"
+              name="newPassword"
               placeholder="Password"
               value={form.newPassword}
               onChange={onChange}
-              required
             />
           </div>
           <button className="btn btn-primary" type="submit" disabled={saving}>

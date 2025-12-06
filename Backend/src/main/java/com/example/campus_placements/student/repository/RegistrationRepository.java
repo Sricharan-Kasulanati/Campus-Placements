@@ -26,4 +26,11 @@ public interface RegistrationRepository extends JpaRepository<Registration, Long
 
     List<Registration> findByCompanyId(Long companyId);
 
+    @Query("""
+           select r.student.email
+           from Registration r
+           where r.company.id = :companyId
+           """)
+    List<String> findEmailsByCompanyId(@Param("companyId") Long companyId);
+
 }

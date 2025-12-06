@@ -4,7 +4,6 @@ import com.example.campus_placements.company.model.Company;
 import com.example.campus_placements.company.repository.CompanyRepository;
 import com.example.campus_placements.quiz.model.Quiz;
 import com.example.campus_placements.quiz.repository.QuizRepository;
-import com.example.campus_placements.student.model.Registration;
 import com.example.campus_placements.student.repository.RegistrationRepository;
 import com.example.campus_placements.user.model.Role;
 import com.example.campus_placements.user.model.User;
@@ -61,11 +60,10 @@ public class NotificationService {
     }
 
     private List<String> emailsForCompany(Long companyId) {
-        List<Registration> regs = registrations.findByCompanyId(companyId);
-        return regs.stream()
-                .map(r -> r.getStudent().getEmail())
+        return registrations.findEmailsByCompanyId(companyId).stream()
                 .filter(Objects::nonNull)
                 .filter(e -> !e.isBlank())
+                .distinct()
                 .toList();
     }
 
