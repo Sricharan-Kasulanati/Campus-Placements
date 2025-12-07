@@ -15,6 +15,10 @@ public class User {
     @Column(nullable=false, length=20)
     private Role role;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public User() {}
     public User(String firstName, String lastName, String email, String passwordHash, Role role) {
         this.firstName = firstName; this.lastName = lastName; this.email = email; this.passwordHash = passwordHash; this.role = role;
